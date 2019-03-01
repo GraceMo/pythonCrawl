@@ -1,3 +1,1 @@
 # pythonCrawl
-
-mn,b,bmb
