@@ -2,7 +2,7 @@
 import scrapy
 import re
 from fang.items import NewHouse,EsfHouse
-from scrapy_redis.spiders import RedisSpider # 1
+# from scrapy_redis.spiders import RedisSpider # 1
 
 class FangtxSpider(scrapy.Spider):
     name = 'fangtx'
@@ -28,8 +28,8 @@ class FangtxSpider(scrapy.Spider):
                 info = [province, city_name, new_house_url]
                 info2 = [province, city_name, esf_url]
                 # yield scrapy.Request(url=new_house_url, callback=self.parse_newhouse, meta={'info': info})
+                yield scrapy.Request(url=new_house_url, callback=self.parse_newhouse, meta={'info': info2})
                 yield scrapy.Request(url=esf_url, callback=self.parse_esf, meta={'info': info2})
-                # yield scrapy.Request(url=esf_url, callback=self.parse_esf, meta={'info': info2})
 
                 break
             break
@@ -69,7 +69,7 @@ class FangtxSpider(scrapy.Spider):
         #     yield scrapy.Request(url=next_url, callback=self.parse_newhouse, meta=response.meta)
 
     def parse_esf(self, response):
-        province, city_name, new_house_url = response.meta.get('info')
+        province, city_name, esf_url = response.meta.get('info')
         dls = response.xpath("//div[@class='houseList']/dl")
         for dl in dls:
             item = EsfHouse(province=province,city_name=city_name)
@@ -92,7 +92,6 @@ class FangtxSpider(scrapy.Spider):
             detail_url = dl.xpath(".//p[@class='title']/a/@href").get()
             item['origin_url'] = response.urljoin(detail_url)
             print('erf', dict(item))
-
             yield item
         # next_url = response.xpath(".//a[text()='下一页']/@href").extract_first()
         # if next_url:
