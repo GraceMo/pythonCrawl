@@ -14,6 +14,7 @@ class JdSpider(RedisSpider):
     def parse(self, response):
         dts = response.xpath("//div[@class='mc']/dl/dt")
         dds = response.xpath("//div[@class='mc']/dl/dd")
+        print('44')
         for dt in dts:
             big_sort = dt.xpath("./a/text()").get()
             inde = dts.index(dt)

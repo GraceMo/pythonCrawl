@@ -19,7 +19,8 @@ USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, li
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
-
+LOG_LEVEL = 'WARNING'
+LOG_FILE = 'JDdd.log'
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32
 
@@ -90,7 +91,7 @@ DOWNLOADER_MIDDLEWARES = {
 SCHEDULER = 'scrapy_redis.scheduler.Scheduler'
 DUPEFILTER_CLASS = 'scrapy_redis.dupefilter.RFPDupeFilter'
 ITEM_PIPELINES = {
-    'scrapy_redis.pipelines.RedisPipeline': 300,
+    # 'scrapy_redis.pipelines.RedisPipeline': 300,
     'jingdong.pipelines.JingdongPipeline': 301,
 }
 SCHEDULER_PERSIST = True

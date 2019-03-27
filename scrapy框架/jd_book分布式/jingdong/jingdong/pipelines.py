@@ -8,6 +8,8 @@
 from scrapy.exporters import JsonLinesItemExporter
 
 import pymysql
+
+
 class JingdongPipeline(object):
     # def __init__(self):
     #     self.f = open('jdbook.json', 'wb')
@@ -25,25 +27,38 @@ class JingdongPipeline(object):
     MYSQL_PORT = 3306
     MYSQL_DBNAME = 'jd_book'
     MYSQL_CHARSET = 'utf8'
+
     def __init__(self):
         self.conn = pymysql.connect(host=self.MYSQL_HOST,
                                     port=self.MYSQL_PORT,
                                     db=self.MYSQL_DBNAME,
                                     user=self.MYSQL_USER,
                                     passwd=self.MYSQL_PASSWORD,
-                                    charset=self.MYSQL_CHARSET,)
+                                    charset=self.MYSQL_CHARSET, )
         self.cursor = self.conn.cursor()
 
     def process_item(self, item, spider):
-        self.cursor.execute('insert into book(Bsort,Ssort,name,author,price,url) values(%s,%s,%s,%s,%s,%s)',[
-            item['big_sort'],
-            item['small_sort'],
-            item['book_name'],
-            item['author'],
-            item['price'],
-            item['url'],
-        ])
-        self.conn.commit()
-    def close_spider(self,spider):
+        if spider.name == 'jd':
+            self.cursor.execute('insert into book(Bsort,Ssort,name,author,price,url) values(%s,%s,%s,%s,%s,%s)', [
+                item['big_sort'],
+                item['small_sort'],
+                item['book_name'],
+                item['author'],
+                item['price'],
+                item['url'],
+            ])
+            self.conn.commit()
+        elif spider.name == 'ddw':
+            self.cursor.execute('insert into ddwbook(Bsort,Ssort,name,author,price,url) values(%s,%s,%s,%s,%s,%s)', [
+                item['big_sort'],
+                item['small_sort'],
+                item['book_name'],
+                item['author'],
+                item['price'],
+                item['url'],
+            ])
+            self.conn.commit()
+
+    def close_spider(self, spider):
         self.cursor.close()
         self.conn.close()
