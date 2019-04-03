@@ -14,7 +14,11 @@ class GswSpider(RedisSpider):
     # start_urls = ['https://www.gushiwen.org/shiwen/default_3A{}A1.aspx'.format(i) for i in range(1, 2)]
     # redis_key = 'gsw:s'
     def start_requests(self):
+        url = ['https://www.gushiwen.org/shiwen/default_3A131313131313A1.aspx']
         start_urls = ['https://www.gushiwen.org/shiwen/default_3A{}A1.aspx'.format(i) for i in range(1, 13)]
+        print('uuuu',start_urls)
+        start_urls = start_urls+url
+        print('kkkk',start_urls)
         for i in start_urls:
             yield scrapy.Request(url=i, callback=self.parse)
 
